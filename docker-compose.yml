@@ -1,0 +1,24 @@
+version: "3.7"
+
+services:
+  database:
+    image: mysql:8.0
+    platform: linux/amd64
+    command:
+      - "--default-authentication-plugin=mysql_native_password"
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_DATABASE=db_dteng
+      - MYSQL_USER=user_dteng
+      - MYSQL_PASSWORD=cirilgroupt
+    ports:
+      - "3306:3306"
+    restart: always
+
+  example-python:
+    image: image-python
+    build: image-python
+    command: ["./example.py"]
+    volumes:
+      - ./data:/data
+
