@@ -18,10 +18,28 @@ services:
       - ./example_schema.sql:/docker-entrypoint-initdb.d/example_schema.sql:ro
     restart: always
 
-  example-python:
-    image: image-python
-    build: image-python
-    command: ["./example.py"]
+  insert-data:
+    image: image-insert-csv-data
+    build: image-insert-csv-data
+    command: ["./insert.py"]
     volumes:
       - ./data:/data
+    depends_on:
+      - database
+  
+  compute-data:
+    image: image-compute-data
+    build: image-compute-data
+    command: ["./compute.py"]
+    volumes:
+      - ./data:/data
+    depends_on:
+      insert-data:
+        condition: service_completed_successfully
 
+  # example-python:
+  #   image: image-python
+  #   build: image-python
+  #   command: ["./example.py"]
+  #   volumes:
+  #     - ./data:/data
