@@ -13,6 +13,9 @@ services:
       - MYSQL_PASSWORD=cirilgroupt
     ports:
       - "3306:3306"
+    volumes:
+      # Mount your SQL file into MySQL’s init directory
+      - ./example_schema.sql:/docker-entrypoint-initdb.d/example_schema.sql:ro
     restart: always
 
   example-python:
